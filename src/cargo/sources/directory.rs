@@ -225,7 +225,7 @@ impl<'cfg> Source for DirectorySource<'cfg> {
 
     fn verify(&self, id: PackageId) -> CargoResult<()> {
         let Some((pkg, cksum)) = self.packages.get(&id) else {
-            eprintln!("failed to find entry for `{}` in directory source", id);
+            anyhow::bail!("failed to find entry for `{}` in directory source", id);
         };
 
         for (file, cksum) in cksum.files.iter() {
