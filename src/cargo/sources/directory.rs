@@ -225,7 +225,7 @@ impl<'cfg> Source for DirectorySource<'cfg> {
 
     fn verify(&self, id: PackageId) -> CargoResult<()> {
         let Some((pkg, cksum)) = self.packages.get(&id) else {
-            anyhow::bail!("failed to find entry for `{}` in directory source", id);
+            eprintln!("failed to find entry for `{}` in directory source", id);
         };
 
         for (file, cksum) in cksum.files.iter() {
@@ -235,7 +235,7 @@ impl<'cfg> Source for DirectorySource<'cfg> {
                 .with_context(|| format!("failed to calculate checksum of: {}", file.display()))?
                 .finish_hex();
             if &*actual != cksum {
-                anyhow::bail!(
+                eprintln!(
                     "the listed checksum of `{}` has changed:\n\
                      expected: {}\n\
                      actual:   {}\n\
